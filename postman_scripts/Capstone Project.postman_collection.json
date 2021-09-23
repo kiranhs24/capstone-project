@@ -1,0 +1,432 @@
+{
+	"info": {
+		"_postman_id": "b3dfec9c-5661-4414-9d27-feb2ac49e44f",
+		"name": "Capstone Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login Action",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check successful login\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Dashboard\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check edit profile button\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Edit Profile\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check member bookings\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Your Bookings\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{Protocol}}://{{Domain}}{{path}}{{login}}?pwd={{password}}&email_id={{email}}",
+					"protocol": "{{Protocol}}",
+					"host": [
+						"{{Domain}}{{path}}{{login}}"
+					],
+					"query": [
+						{
+							"key": "pwd",
+							"value": "{{password}}"
+						},
+						{
+							"key": "email_id",
+							"value": "{{email}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup Action",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const number = Math.floor(Math.random() * (1000-1)) + 1;\r",
+							"var email = \"kiran\"+number+\"@kiran\"+number+\".com\" \r",
+							"pm.environment.set(\"email\", email);\r",
+							"pm.environment.set(\"password\", \"kiran\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check Registration Confirmation\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Registration Confirmation\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{Protocol}}://{{Domain}}{{path}}{{signup}}?email_id={{email}}&pwd={{password}}&pwd2={{password}}&name=Kiran&address=\"\"&city=\"\"",
+					"protocol": "{{Protocol}}",
+					"host": [
+						"{{Domain}}{{path}}{{signup}}"
+					],
+					"query": [
+						{
+							"key": "email_id",
+							"value": "{{email}}"
+						},
+						{
+							"key": "pwd",
+							"value": "{{password}}"
+						},
+						{
+							"key": "pwd2",
+							"value": "{{password}}"
+						},
+						{
+							"key": "name",
+							"value": "Kiran"
+						},
+						{
+							"key": "address",
+							"value": "\"\""
+						},
+						{
+							"key": "city",
+							"value": "\"\""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Home",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check book flight button\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Book Flight\");\r",
+							"});\r",
+							"\r",
+							"var flightId = pm.environment.get(\"flightId\");\r",
+							"\r",
+							"pm.test(\"Check flight id\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"bookflight?id=\"+flightId);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Protocol}}://{{Domain}}{{path}}{{home}}?source={{source}}&destination={{destination}}",
+					"protocol": "{{Protocol}}",
+					"host": [
+						"{{Domain}}{{path}}{{home}}"
+					],
+					"query": [
+						{
+							"key": "source",
+							"value": "{{source}}"
+						},
+						{
+							"key": "destination",
+							"value": "{{destination}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check for dashboard after updating profile details\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Dashboard\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{Protocol}}://{{Domain}}{{path}}{{editProfile}}?user_id={{userId}}&pwd={{password}}&pwd2={{password}}&name=Kiran&address=This is api test address&city=This is api test city",
+					"protocol": "{{Protocol}}",
+					"host": [
+						"{{Domain}}{{path}}{{editProfile}}"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "{{userId}}"
+						},
+						{
+							"key": "pwd",
+							"value": "{{password}}"
+						},
+						{
+							"key": "pwd2",
+							"value": "{{password}}"
+						},
+						{
+							"key": "name",
+							"value": "Kiran"
+						},
+						{
+							"key": "address",
+							"value": "This is api test address"
+						},
+						{
+							"key": "city",
+							"value": "This is api test city"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book Flight",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check for payment gateway page\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"PAYMENT GATEWAY\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check order amount\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"4500.00\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check source and destination\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Bangalore - Chennai\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check for complete purchase button\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"completepurchase\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Protocol}}://{{Domain}}{{path}}{{bookFlight}}?id={{flightId}}",
+					"protocol": "{{Protocol}}",
+					"host": [
+						"{{Domain}}{{path}}{{bookFlight}}"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{flightId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comlpete Purchase",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check for booking confirmation page\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"BOOKING CONFIRMATION\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check for booking confirmation\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"has been booked\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check for member booking button\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"memberbookings\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 600ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Protocol}}://{{Domain}}{{path}}{{completePurchase}}",
+					"protocol": "{{Protocol}}",
+					"host": [
+						"{{Domain}}{{path}}{{completePurchase}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Member Bookings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check for number of bookings\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Total 1 bookings\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check for source\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Bangalore\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check for destination\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Chennai\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check for price\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"4500.00\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Protocol}}://{{Domain}}{{path}}{{bookedFlights}}",
+					"protocol": "{{Protocol}}",
+					"host": [
+						"{{Domain}}{{path}}{{bookedFlights}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Protocol",
+			"value": "http"
+		},
+		{
+			"key": "Domain",
+			"value": "localhost:8100"
+		}
+	]
+}
